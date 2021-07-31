@@ -1,0 +1,14 @@
+{
+    "server": {
+        "port": "3000"
+    },
+    "headers": {
+        "Content-Type": "multipart/form-data",
+        "X-Powered-By": ""
+    },
+    "cors": {
+        "origin": "http://localhost:8000",
+        "methods": "GET, POST",
+        "allowedHeaders": "Content-Type"
+    }
+}
