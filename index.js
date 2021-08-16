@@ -18,15 +18,13 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-app.use('/', cors(config.cors));
-
-app.use('/', (req, res, next) => {
+app.use('/messages', (req, res, next) => {
     res.set(config.headers);
-    
     next();
-});
+}, cors(config.cors));
 
-app.post('/feedback', upload.fields([]), async (req, res) => {
+app.post('/messages/feedback', upload.fields([]), async (req, res) => {
+    console.log('feedback')
     try {
         const transporter = await nodemailer.createTransport({
             service: "Gmail",
@@ -58,10 +56,12 @@ app.post('/feedback', upload.fields([]), async (req, res) => {
         }
     } catch(e) {
         console.log(e);
+        res.status(500).json({"message": "error"}).end();
     }
 });
 
-app.post('/cost', upload.single('passport'), async (req, res) => {
+app.post('/messages/projects', upload.fields([]), async (req, res) => {
+    console.log('projects')
     try {
         const transporter = await nodemailer.createTransport({
             service: "Gmail",
@@ -71,10 +71,52 @@ app.post('/cost', upload.single('passport'), async (req, res) => {
             },
         })
         
-        const text = `<strong>ИНН:</strong> ${req.body.inn}<br>
+        const text = `
+            <strong>ФИО:</strong> ${req.body.initials}<br>
+            <strong>Интересующий проект:</strong> ${req.body.projectName}<br>
+            <strong>Телефон:</strong> ${req.body.phone}<br>
+            <strong>e-mail:</strong> ${req.body.email}
+        `;
+
+        
+        const result = await transporter.sendMail({
+            from: gmail.user,
+            to: gmail.address,
+            subject: `Сайт Экотранс: ${req.body.initials} интересуется проектом`,
+            html:`${text}`,
+        })
+        
+        console.log(result);
+
+        if (result.accepted) {
+            res.status(200).json({"message": "done"}).end();
+        } else {
+            res.status(500).json({"message": "error"}).end();
+        }
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({"message": "error"}).end();
+    }
+});
+
+app.post('/messages/services', upload.single('passport'), async (req, res) => {
+    console.log('services')
+    try {
+        const transporter = await nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: gmail.user,
+                pass: gmail.password
+            },
+        })
+        
+        const text = `
+            <strong>Интересующая услуга:</strong> ${req.body.serviceName}<br>
+            <strong>ИНН:</strong> ${req.body.inn}<br>
             <strong>ФККО:</strong> ${req.body.fkko}<br>
             <strong>Телефон:</strong> ${req.body.phone}<br>
-            <strong>e-mail:</strong> ${req.body.email}`;
+            <strong>e-mail:</strong> ${req.body.email}
+        `;
 
         
         const result = await transporter.sendMail({
@@ -104,6 +146,7 @@ app.post('/cost', upload.single('passport'), async (req, res) => {
 
     } catch(e) {
         console.log(e);
+        res.status(500).json({"message": "error"}).end();
     }
 });
 
