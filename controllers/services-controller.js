@@ -14,7 +14,7 @@ async function servicesController (req, res) {
         })
         
         const text = `
-            <strong>Заявка на:</strong> ${req.body.serviceName}<br>
+            <strong>Заявка:</strong> ${req.body.serviceName}<br>
             <strong>ИНН:</strong> ${req.body.inn}<br>
             <strong>ФККО:</strong> ${req.body.fkko}<br>
             <strong>Телефон:</strong> ${req.body.phone}<br>

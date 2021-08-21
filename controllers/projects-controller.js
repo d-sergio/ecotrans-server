@@ -12,7 +12,7 @@ async function projectsController (req, res) {
         })
         
         const text = `
-            <strong>Заявка на:</strong> ${req.body.projectName}<br>
+            <strong>Заявка:</strong> ${req.body.projectName}<br>
             <strong>ФИО:</strong> ${req.body.initials}<br>
             <strong>Телефон:</strong> ${req.body.phone}<br>
             <strong>e-mail:</strong> ${req.body.email}
