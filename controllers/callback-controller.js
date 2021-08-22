@@ -12,7 +12,7 @@ async function callbackController (req, res) {
         })
         
         const text = `
-            <strong>Заявка на обратный звонок</strong><br>
+            <strong>Заявка на обратный звонок. "Зелёный телефон"</strong><br>
             <strong>ФИО:</strong> ${req.body.initials}<br>
             <strong>Телефон:</strong> ${req.body.phone}<br>
         `;

@@ -14,7 +14,7 @@ async function servicesController (req, res) {
         })
         
         const text = `
-            <strong>Заявка:</strong> ${req.body.serviceName}<br>
+            <strong>Заявка:</strong> ${req.body.orderName}<br>
             <strong>ИНН:</strong> ${req.body.inn}<br>
             <strong>ФККО:</strong> ${req.body.fkko}<br>
             <strong>Телефон:</strong> ${req.body.phone}<br>
@@ -25,7 +25,7 @@ async function servicesController (req, res) {
         const result = await transporter.sendMail({
             from: gmail.user,
             to: gmail.address,
-            subject: `Заявка с сайта Экотранс: ${req.body.serviceName}`,
+            subject: `Заявка с сайта Экотранс: ${req.body.orderName}`,
             html:`${text}`,
             attachments: [
                 {
